@@ -12,6 +12,6 @@ export const defaultTheme = {
       profile: '#0B1B2B',
       background: '#071422',
       input: '#040F1A',
-    }
-  }
-};
+    },
+  },
+} as const;
