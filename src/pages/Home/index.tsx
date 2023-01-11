@@ -7,7 +7,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
-import { HomeContainer, PhotoWrap, Profile, InfoWrap } from './styles';
+import { HomeContainer, PhotoWrap, Profile, InfoWrap, Form } from './styles';
 
 export function Home() {
   return (
@@ -48,6 +48,14 @@ export function Home() {
           </div>
         </InfoWrap>
       </Profile>
+
+      <Form>
+        <div className="header">
+          <strong>Publicações</strong>
+          <span>6 publicações</span>
+        </div>
+        <input type="text" placeholder="Buscar conteúdo" />
+      </Form>
     </HomeContainer>
   );
 }
