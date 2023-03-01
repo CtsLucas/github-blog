@@ -5,4 +5,6 @@ export const LayoutContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  padding-bottom: 1rem;
 `;

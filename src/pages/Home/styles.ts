@@ -148,3 +148,11 @@ export const Form = styled.form`
     }
   }
 `;
+
+export const ListCards = styled.div`
+  margin-top: 3rem;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 2rem;
+`;
