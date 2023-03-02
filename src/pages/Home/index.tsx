@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowUpRightFromSquare,
@@ -7,7 +8,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
-import { Card } from './components/Card';
+import { api } from '../../lib/axios';
+
+import { Card, Issue } from './components/Card';
 
 import {
   HomeContainer,
@@ -18,40 +21,74 @@ import {
   ListCards,
 } from './styles';
 
+interface User {
+  name: string;
+  avatar_url: string;
+  bio: string;
+  followers: number;
+  company: string;
+  login: string;
+  html_url: string;
+}
+
 export function Home() {
+  const [user, setUser] = useState<User>({} as User);
+  const [issues, setIssues] = useState<Issue[]>([]);
+
+  async function fetchGitHubUser() {
+    try {
+      const [{ data: userData }, { data: issuesData }] = await axios.all([
+        api.get(`/users/${import.meta.env.VITE_API_GITHUB_USER}`),
+        api.get(
+          `/repos/${import.meta.env.VITE_API_GITHUB_USER}/${
+            import.meta.env.VITE_API_GITHUB_REPO
+          }/issues`
+        ),
+      ]);
+
+      setUser(userData);
+      setIssues(issuesData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchGitHubUser();
+  }, []);
+
   return (
     <HomeContainer>
       <Profile>
         <PhotoWrap>
-          <img src="https://www.github.com/CtsLucas.png" alt="" />
+          <img src={user.avatar_url} alt="" />
         </PhotoWrap>
         <InfoWrap>
           <div className="title">
-            <h1>Lucas Cavalcante Silva</h1>
-            <Link to="/">
+            <h1>{user.name}</h1>
+            {/* TODO: Create Link component for handle external and internal links */}
+            <a href={user.html_url} target="_blank" rel="noreferrer">
               GitHub <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-            </Link>
+            </a>
           </div>
           <div className="description">
-            <p>
-              Tristique volutpat pulvinar vel massa, pellentesque egestas. Eu
-              viverra massa quam dignissim aenean malesuada suscipit. Nunc,
-              volutpat pulvinar vel mass.
-            </p>
+            <p>{user.bio}</p>
           </div>
           <div className="details">
             <ul>
               <li>
                 <FontAwesomeIcon icon={faGithub} />
-                cameronwll
+                {user.login}
               </li>
               <li>
                 <FontAwesomeIcon icon={faBuilding} />
-                Rocketseat
+                {user.company}
               </li>
               <li>
                 <FontAwesomeIcon icon={faUserGroup} />
-                32 seguidores
+                {user.followers === 1
+                  ? `${user.followers} seguidor`
+                  : `${user.followers} seguidores`}
               </li>
             </ul>
           </div>
@@ -61,13 +98,19 @@ export function Home() {
       <Form>
         <div className="header">
           <strong>Publicações</strong>
-          <span>6 publicações</span>
+          <span>
+            {issues.length === 1
+              ? `${issues.length} publicação`
+              : `${issues.length} publicações`}
+          </span>
         </div>
         <input type="text" placeholder="Buscar conteúdo" />
       </Form>
 
       <ListCards>
-        <Card />
+        {issues.map((issue) => (
+          <Card key={issue.id} issue={issue} />
+        ))}
       </ListCards>
     </HomeContainer>
   );

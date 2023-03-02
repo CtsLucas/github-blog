@@ -1,21 +1,32 @@
+import { formatDifferenceDate } from '../../../../util/formatDifferenceDate';
+
 import { CardContainer } from './styles';
 
-export function Card() {
+export interface Issue {
+  id: number;
+  title: string;
+  body: string;
+  user: {
+    login: string;
+  };
+  url: string;
+  created_at: string;
+  updated_at: string;
+  coments: number;
+}
+interface CardProps {
+  issue: Issue;
+}
+
+export function Card({ issue }: CardProps) {
   return (
     <CardContainer>
       <div className="title">
-        <strong>JavaScript data types and data structures</strong>
-        <span>Há 1 dia</span>
+        <strong>{issue.title}</strong>
+        <span>Há {formatDifferenceDate(issue.updated_at)}</span>
       </div>
       <div className="description">
-        <p>
-          Programming languages all have built-in data structures, but these
-          often differ from one language to another. This article attempts to
-          list the built-in data structures available in JavaScript and what
-          properties they have. These can be used to build other data
-          structures. Wherever possible, comparisons with other languages are
-          drawn.
-        </p>
+        <p>{issue.body}</p>
       </div>
     </CardContainer>
   );

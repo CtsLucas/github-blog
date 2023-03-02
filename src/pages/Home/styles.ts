@@ -87,7 +87,6 @@ export const InfoWrap = styled.div`
       & > li {
         color: ${({ theme }) => theme.colors.base.subtitle};
         font-size: 1rem;
-        line-height: 160%;
         font-weight: 400;
 
         display: flex;
