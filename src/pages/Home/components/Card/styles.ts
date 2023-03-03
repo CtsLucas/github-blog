@@ -7,12 +7,19 @@ export const CardContainer = styled(Link)`
   background: ${({ theme }) => theme.colors.base.post};
   padding: 2rem;
   border-radius: 10px;
+  border: 2px solid transparent;
+  transition: all ease-in 0.2s;
 
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 
   text-decoration: none;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.base.profile};
+    border-color: ${({ theme }) => theme.colors.primary.main};
+  }
 
   & > .title {
     display: flex;

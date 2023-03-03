@@ -1,3 +1,5 @@
+import removeMarkdown from 'remove-markdown';
+
 import { User } from '../..';
 import { formatDifferenceDate } from '../../../../util/formatDifferenceDate';
 
@@ -26,7 +28,7 @@ export function Card({ issue }: CardProps) {
         <span>Há {formatDifferenceDate(issue.updated_at)}</span>
       </div>
       <div className="description">
-        <p>{issue.body}</p>
+        <p>{removeMarkdown(issue.body)}</p>
       </div>
     </CardContainer>
   );
