@@ -18,7 +18,7 @@ export const PostHeader = styled.div`
     justify-content: space-between;
 
     & > a {
-      color: ${({ theme }) => theme.colors.blue};
+      color: ${({ theme }) => theme.colors.primary.main};
       font-size: 0.75rem;
       font-weight: 700;
       line-height: 160%;
@@ -34,12 +34,8 @@ export const PostHeader = styled.div`
       gap: 0.5rem;
 
       &:hover {
-        opacity: 0.6;
-        border-bottom: 2px solid ${({ theme }) => theme.colors.blue};
-      }
-
-      &:visited {
-        color: ${({ theme }) => theme.colors.blue};
+        color: ${({ theme }) => theme.colors.primary.light};
+        border-color: ${({ theme }) => theme.colors.primary.light};
       }
     }
   }
@@ -67,7 +63,6 @@ export const PostHeader = styled.div`
       & > li {
         color: ${({ theme }) => theme.colors.base.subtitle};
         font-size: 1rem;
-        line-height: 160%;
         font-weight: 400;
 
         display: flex;

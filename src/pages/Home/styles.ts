@@ -43,7 +43,7 @@ export const InfoWrap = styled.div`
     }
 
     & > a {
-      color: ${({ theme }) => theme.colors.blue};
+      color: ${({ theme }) => theme.colors.primary.main};
       font-weight: 700;
       font-size: 0.75rem;
       line-height: 130%;
@@ -58,8 +58,8 @@ export const InfoWrap = styled.div`
       gap: 0.5rem;
 
       &:hover {
-        opacity: 0.6;
-        border-bottom: 2px solid ${({ theme }) => theme.colors.blue};
+        color: ${({ theme }) => theme.colors.primary.light};
+        border-color: ${({ theme }) => theme.colors.primary.light};
       }
     }
   }

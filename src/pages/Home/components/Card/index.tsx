@@ -1,18 +1,18 @@
+import { User } from '../..';
 import { formatDifferenceDate } from '../../../../util/formatDifferenceDate';
 
 import { CardContainer } from './styles';
 
 export interface Issue {
   id: number;
+  number: number;
   title: string;
   body: string;
-  user: {
-    login: string;
-  };
-  url: string;
+  user: User;
+  html_url: string;
   created_at: string;
   updated_at: string;
-  coments: number;
+  comments: number;
 }
 interface CardProps {
   issue: Issue;
@@ -20,7 +20,7 @@ interface CardProps {
 
 export function Card({ issue }: CardProps) {
   return (
-    <CardContainer>
+    <CardContainer to={`/post/${issue.number}`}>
       <div className="title">
         <strong>{issue.title}</strong>
         <span>Há {formatDifferenceDate(issue.updated_at)}</span>

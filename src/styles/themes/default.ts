@@ -1,6 +1,10 @@
 export const defaultTheme = {
   colors: {
-    blue: '#3294F8',
+    primary: {
+      main: '#3294F8',
+      dark: '#295BDC',
+      light: '#4BC3FC',
+    },
     base: {
       title: '#E7EDF4',
       subtitle: '#C4D4E3',

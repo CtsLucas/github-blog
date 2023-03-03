@@ -1,6 +1,7 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const CardContainer = styled.div`
+export const CardContainer = styled(Link)`
   max-width: 416px;
   max-height: 260px;
   background: ${({ theme }) => theme.colors.base.post};
@@ -10,6 +11,8 @@ export const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+
+  text-decoration: none;
 
   & > .title {
     display: flex;
@@ -31,13 +34,21 @@ export const CardContainer = styled.div`
       font-size: 0.875rem;
       font-weight: 400;
       line-height: 160%;
+      white-space: nowrap;
     }
   }
 
   & > .description {
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    display: -webkit-box;
-    overflow: hidden;
+    & > p {
+      color: ${({ theme }) => theme.colors.base.text};
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 160%;
+
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      display: -webkit-box;
+      overflow: hidden;
+    }
   }
 `;

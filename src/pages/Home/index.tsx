@@ -21,7 +21,7 @@ import {
   ListCards,
 } from './styles';
 
-interface User {
+export interface User {
   name: string;
   avatar_url: string;
   bio: string;

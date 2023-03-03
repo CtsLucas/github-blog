@@ -8,12 +8,12 @@ export function formatDifferenceDate(value: string) {
   const minutes = differenceTime % 60;
 
   if (days > 0) {
-    return `${days}d ${hours}h ${minutes}m`;
+    return `${days === 1 ? `${days} dia` : `${days} dias`}`;
   } else if (hours > 0) {
-    return `${hours}h ${minutes}m`;
+    return `${hours === 1 ? `${hours} hora` : `${hours} horas`}`;
   } else if (minutes > 0) {
-    return `${minutes}m`;
+    return `${minutes === 1 ? `${minutes} minuto` : `${minutes} minutos`}`;
   } else {
-    return '0m';
+    return 'pouco tempo';
   }
 }
