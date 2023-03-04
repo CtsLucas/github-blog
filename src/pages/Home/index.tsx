@@ -1,35 +1,12 @@
 import { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faArrowUpRightFromSquare,
-  faBuilding,
-  faUserGroup,
-} from '@fortawesome/free-solid-svg-icons';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 import { api } from '../../lib/axios';
 
 import { Card, Issue } from './components/Card';
 
-import {
-  HomeContainer,
-  PhotoWrap,
-  Profile,
-  InfoWrap,
-  Form,
-  ListCards,
-} from './styles';
-
-export interface User {
-  name: string;
-  avatar_url: string;
-  bio: string;
-  followers: number;
-  company: string;
-  login: string;
-  html_url: string;
-}
+import { HomeContainer, Form, ListCards } from './styles';
+import { Profile, User } from './components/Profile';
 
 interface Issues {
   total_count: number;
@@ -76,42 +53,7 @@ export function Home() {
 
   return (
     <HomeContainer>
-      <Profile>
-        <PhotoWrap>
-          <img src={user.avatar_url} alt="" />
-        </PhotoWrap>
-        <InfoWrap>
-          <div className="title">
-            <h1>{user.name}</h1>
-            {/* TODO: Create Link component for handle external and internal links */}
-            <a href={user.html_url} target="_blank" rel="noreferrer">
-              GitHub <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-            </a>
-          </div>
-          <div className="description">
-            <p>{user.bio}</p>
-          </div>
-          <div className="details">
-            <ul>
-              <li>
-                <FontAwesomeIcon icon={faGithub} />
-                {user.login}
-              </li>
-              <li>
-                <FontAwesomeIcon icon={faBuilding} />
-                {user.company}
-              </li>
-              <li>
-                <FontAwesomeIcon icon={faUserGroup} />
-                {user.followers === 1
-                  ? `${user.followers} seguidor`
-                  : `${user.followers} seguidores`}
-              </li>
-            </ul>
-          </div>
-        </InfoWrap>
-      </Profile>
-
+      <Profile user={user} />
       <Form>
         <div className="header">
           <strong>Publicações</strong>
