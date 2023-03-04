@@ -12,6 +12,7 @@ export const CardContainer = styled(Link)`
 
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 1.25rem;
 
   text-decoration: none;

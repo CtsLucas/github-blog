@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -31,18 +31,35 @@ export interface User {
   html_url: string;
 }
 
+interface Issues {
+  total_count: number;
+  incomplete_results: boolean;
+  items: Issue[];
+}
+
 export function Home() {
   const [user, setUser] = useState<User>({} as User);
-  const [issues, setIssues] = useState<Issue[]>([]);
+  const [issues, setIssues] = useState<Issues>({} as Issues);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  async function fetchGitHubUser() {
+  const deferredSearchTerm = useDeferredValue(searchTerm);
+
+  const filteredIssues = useMemo(
+    () =>
+      issues?.items?.filter((issue) =>
+        issue.title.toLowerCase().includes(deferredSearchTerm.toLowerCase())
+      ),
+    [issues, deferredSearchTerm]
+  );
+
+  async function fetchGitHubData() {
     try {
       const [{ data: userData }, { data: issuesData }] = await axios.all([
         api.get(`/users/${import.meta.env.VITE_API_GITHUB_USER}`),
         api.get(
-          `/repos/${import.meta.env.VITE_API_GITHUB_USER}/${
-            import.meta.env.VITE_API_GITHUB_REPO
-          }/issues`
+          `/search/issues?q=+label:published+repo:${
+            import.meta.env.VITE_API_GITHUB_USER
+          }/${import.meta.env.VITE_API_GITHUB_REPO}`
         ),
       ]);
 
@@ -54,7 +71,7 @@ export function Home() {
   }
 
   useEffect(() => {
-    fetchGitHubUser();
+    fetchGitHubData();
   }, []);
 
   return (
@@ -99,16 +116,21 @@ export function Home() {
         <div className="header">
           <strong>Publicações</strong>
           <span>
-            {issues.length === 1
-              ? `${issues.length} publicação`
-              : `${issues.length} publicações`}
+            {filteredIssues?.length === 1
+              ? `${issues.total_count} publicação`
+              : `${issues.total_count} publicações`}
           </span>
         </div>
-        <input type="text" placeholder="Buscar conteúdo" />
+        <input
+          type="text"
+          placeholder="Buscar conteúdo"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </Form>
 
       <ListCards>
-        {issues.map((issue) => (
+        {filteredIssues?.map((issue) => (
           <Card key={issue.id} issue={issue} />
         ))}
       </ListCards>
