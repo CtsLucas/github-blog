@@ -23,6 +23,7 @@ export function useHome() {
   const [user, setUser] = useState<User>({} as User);
   const [issues, setIssues] = useState<Issues>({} as Issues);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const deferredSearchTerm = useDeferredValue(searchTerm);
 
@@ -35,6 +36,7 @@ export function useHome() {
   );
 
   const fetchGitHubData = useCallback(async () => {
+    setIsLoading(true);
     try {
       const [{ data: userData }, { data: issuesData }] = await axios.all([
         api.get(`/users/${import.meta.env.VITE_API_GITHUB_USER}`),
@@ -49,6 +51,8 @@ export function useHome() {
       setIssues(issuesData);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -68,6 +72,7 @@ export function useHome() {
     issues,
     searchTerm,
     filteredIssues,
+    isLoading,
     handleChangeSearchTerm,
   };
 }
