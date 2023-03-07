@@ -1,11 +1,4 @@
-import {
-  InvalidEvent,
-  useCallback,
-  useDeferredValue,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 
 import { api } from '../../lib/axios';
@@ -24,16 +17,7 @@ export function useHome() {
   const [issues, setIssues] = useState<Issues>({} as Issues);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-
-  const deferredSearchTerm = useDeferredValue(searchTerm);
-
-  const filteredIssues = useMemo(
-    () =>
-      issues?.items?.filter((issue) =>
-        issue.title.toLowerCase().includes(deferredSearchTerm.toLowerCase())
-      ),
-    [issues, deferredSearchTerm]
-  );
+  const [searchIsLoading, setSearchIsLoading] = useState(false);
 
   const fetchGitHubData = useCallback(async () => {
     setIsLoading(true);
@@ -60,19 +44,30 @@ export function useHome() {
     fetchGitHubData();
   }, [fetchGitHubData]);
 
-  const handleChangeSearchTerm = useCallback(
-    (event: InvalidEvent<HTMLInputElement>) => {
-      setSearchTerm(event.target.value);
-    },
-    []
-  );
+  const handleChangeSearchTerm = useCallback(async (searchTerm: string) => {
+    setSearchIsLoading(true);
+    try {
+      const { data } = await api.get(
+        `/search/issues?q=${searchTerm}+label:published+repo:${
+          import.meta.env.VITE_API_GITHUB_USER
+        }/${import.meta.env.VITE_API_GITHUB_REPO}`
+      );
+
+      setSearchTerm(searchTerm);
+      setIssues(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSearchIsLoading(false);
+    }
+  }, []);
 
   return {
     user,
     issues,
     searchTerm,
-    filteredIssues,
     isLoading,
+    searchIsLoading,
     handleChangeSearchTerm,
   };
 }

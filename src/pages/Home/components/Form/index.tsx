@@ -1,40 +1,71 @@
-import { InvalidEvent } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as zod from 'zod';
+import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Issues } from '../../useHome';
-import { Issue } from '../Card';
 
 import { FormContainer, FormInput } from './style';
 
 interface FormProps {
   searchTerm: string;
   issues: Issues;
-  onChangeSearchTerm: (event: InvalidEvent<HTMLInputElement>) => void;
-  filteredIssues: Issue[];
+  onChangeSearchTerm: (searchTerm: string) => void;
 }
 
-export function Form({
-  issues,
-  filteredIssues,
-  searchTerm,
-  onChangeSearchTerm,
-}: FormProps) {
+const newSeacrhTermSchema = zod.object({
+  search: zod.string(),
+});
+
+type NewSearchTerm = zod.infer<typeof newSeacrhTermSchema>;
+
+export function Form({ issues, onChangeSearchTerm, searchTerm }: FormProps) {
+  const { register, handleSubmit, reset } = useForm({
+    resolver: zodResolver(newSeacrhTermSchema),
+    defaultValues: {
+      search: '',
+    },
+  });
+
+  function handleSearchTerm({ search }: NewSearchTerm) {
+    onChangeSearchTerm(search);
+  }
+
+  function handleClearSearchTerm() {
+    reset();
+    onChangeSearchTerm('');
+  }
+
   return (
-    <FormContainer>
+    <FormContainer onSubmit={handleSubmit(handleSearchTerm)}>
       <div className="form__header">
         <strong>Publicações</strong>
         <span>
-          {filteredIssues?.length === 1
+          {issues.items?.length === 1
             ? `${issues.total_count} publicação`
             : `${issues.total_count} publicações`}
         </span>
       </div>
 
-      <FormInput
-        type="text"
-        placeholder="Buscar conteúdo"
-        value={searchTerm}
-        onChange={onChangeSearchTerm}
-      />
+      <div className="form__content">
+        <FormInput
+          type="text"
+          placeholder="Buscar conteúdo"
+          {...register('search')}
+        />
+
+        {searchTerm.length > 0 && (
+          <button
+            type="button"
+            className="form__content__delete"
+            title="Limpar busca"
+            onClick={handleClearSearchTerm}
+          >
+            <FontAwesomeIcon icon={faDeleteLeft} />
+          </button>
+        )}
+      </div>
     </FormContainer>
   );
 }

@@ -1,19 +1,21 @@
 import { useHome } from './useHome';
 
+import { Empty } from '../../assets/icons/Empty';
+
 import { Profile } from './components/Profile';
 import { Card } from './components/Card';
 import { Form } from './components/Form';
-
-import { HomeContainer, HomeContent } from './styles';
 import { Loader } from '../../components/Loader';
+
+import { HomeContainer, HomeContent, ListEmpty } from './styles';
 
 export function Home() {
   const {
     user,
     issues,
     searchTerm,
-    filteredIssues,
     isLoading,
+    searchIsLoading,
     handleChangeSearchTerm,
   } = useHome();
 
@@ -28,13 +30,22 @@ export function Home() {
             issues={issues}
             searchTerm={searchTerm}
             onChangeSearchTerm={handleChangeSearchTerm}
-            filteredIssues={filteredIssues}
           />
+
           <HomeContent>
-            {filteredIssues?.map((issue) => (
-              <Card key={issue.id} issue={issue} />
-            ))}
-          </HomeContent>{' '}
+            {searchIsLoading ? (
+              <Loader />
+            ) : issues.total_count > 0 ? (
+              issues.items?.map((issue) => (
+                <Card key={issue.id} issue={issue} />
+              ))
+            ) : (
+              <ListEmpty>
+                <Empty />
+                <strong>Não há resultados para {`"${searchTerm}"`}</strong>
+              </ListEmpty>
+            )}
+          </HomeContent>
         </>
       )}
     </HomeContainer>

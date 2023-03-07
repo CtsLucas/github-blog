@@ -27,6 +27,38 @@ export const FormContainer = styled.form`
       line-height: 160%;
     }
   }
+
+  & > .form__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+
+    & > button {
+      background: transparent;
+      color: ${({ theme }) => theme.colors.base.text};
+      padding: 1rem 1rem;
+      transition: all ease-in 0.2s;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+
+      &:hover {
+        color: ${({ theme }) => theme.colors.primary.light};
+      }
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
 `;
 
 export const FormInput = styled.input`

@@ -15,6 +15,23 @@ export const HomeContent = styled.div`
   margin-top: 3rem;
 
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(416px, 1fr));
+  justify-items: center;
   grid-gap: 2rem;
+`;
+
+export const ListEmpty = styled.div`
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+
+  & > strong {
+    color: ${({ theme }) => theme.colors.base.text};
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
 `;
