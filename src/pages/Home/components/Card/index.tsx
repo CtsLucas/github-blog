@@ -1,7 +1,7 @@
 import removeMarkdown from 'remove-markdown';
 
-import { User } from '../..';
 import { formatDifferenceDate } from '../../../../util/formatDifferenceDate';
+import { User } from '../Profile';
 
 import { CardContainer } from './styles';
 
