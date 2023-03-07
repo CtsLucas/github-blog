@@ -1,13 +1,13 @@
 import { useHome } from './useHome';
 
-import { Empty } from '../../assets/icons/Empty';
-
 import { Profile } from './components/Profile';
 import { Card } from './components/Card';
 import { Form } from './components/Form';
 import { Loader } from '../../components/Loader';
+import { Error } from '../../components/Error';
+import { Empty } from '../../components/Empty';
 
-import { HomeContainer, HomeContent, ListEmpty } from './styles';
+import { HomeContainer, HomeContent } from './styles';
 
 export function Home() {
   const {
@@ -16,8 +16,13 @@ export function Home() {
     searchTerm,
     isLoading,
     searchIsLoading,
+    error,
     handleChangeSearchTerm,
   } = useHome();
+
+  if (error) {
+    return <Error />;
+  }
 
   return (
     <HomeContainer>
@@ -40,10 +45,7 @@ export function Home() {
                 <Card key={issue.id} issue={issue} />
               ))
             ) : (
-              <ListEmpty>
-                <Empty />
-                <strong>Não há resultados para {`"${searchTerm}"`}</strong>
-              </ListEmpty>
+              <Empty searchTerm={searchTerm} />
             )}
           </HomeContent>
         </>

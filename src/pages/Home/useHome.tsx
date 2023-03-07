@@ -18,6 +18,7 @@ export function useHome() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [searchIsLoading, setSearchIsLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const fetchGitHubData = useCallback(async () => {
     setIsLoading(true);
@@ -34,7 +35,12 @@ export function useHome() {
       setUser(userData);
       setIssues(issuesData);
     } catch (error) {
-      console.log(error);
+      console.log(
+        'Você atingiu o limite de requisições da API do Github, aguarde 1 minuto e tente novamente.',
+        error
+      );
+
+      setError(true);
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +62,12 @@ export function useHome() {
       setSearchTerm(searchTerm);
       setIssues(data);
     } catch (error) {
-      console.log(error);
+      console.log(
+        'Você atingiu o limite de requisições da API do Github, aguarde 1 minuto e tente novamente.',
+        error
+      );
+
+      setError(true);
     } finally {
       setSearchIsLoading(false);
     }
@@ -68,6 +79,7 @@ export function useHome() {
     searchTerm,
     isLoading,
     searchIsLoading,
+    error,
     handleChangeSearchTerm,
   };
 }
