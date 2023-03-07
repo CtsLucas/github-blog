@@ -53,6 +53,7 @@ export const PostHeaderContainer = styled.div`
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    flex-wrap: wrap;
 
     & > .post-header__footer__items {
       & > span {

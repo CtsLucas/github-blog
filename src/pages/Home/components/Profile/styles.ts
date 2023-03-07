@@ -10,6 +10,10 @@ export const ProfileContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 2rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const ProfileAvatar = styled.div`
@@ -25,6 +29,7 @@ export const ProfileContent = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    flex-wrap: wrap;
 
     & > h1 {
       color: ${({ theme }) => theme.colors.base.title};
@@ -73,6 +78,7 @@ export const ProfileContent = styled.div`
     align-items: center;
     justify-content: flex-start;
     gap: 1.5rem;
+    flex-wrap: wrap;
 
     & > .profile-content__footer__items {
       & > span {
